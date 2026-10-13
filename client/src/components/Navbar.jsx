@@ -1,10 +1,45 @@
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
+const NAV_LINKS = {
+  guest: [{ to: "/", label: "Home" }],
+  customer: [
+    { to: "/", label: "Home" },
+    { to: "/cars", label: "Cars" },
+    { to: "/bookings", label: "My Bookings" },
+  ],
+  author: [
+    { to: "/", label: "Home" },
+    { to: "/author/dashboard", label: "Dashboard" },
+    { to: "/author/cars", label: "Manage Cars" },
+  ],
+};
 
 function Navbar() {
   const location = useLocation();
-
+  const [isHovered, setIsHovered] = useState(false);
+  const { user, logout } = useAuth();
   const isActive = (path) => {
     return location.pathname === path;
+  };
+
+  const role = user ? user.role : "guest";
+  const links = NAV_LINKS[role] || NAV_LINKS.guest;
+
+  const buttonStyle = {
+    padding: "9px 16px",
+    borderRadius: "8px",
+    fontWeight: "700",
+    color: isHovered ? "red" : "white",
+    background: isHovered
+      ? "white"
+      : "linear-gradient(135deg, #f97316, #ec4899)",
+  };
+
+  const hoverProps = {
+    onMouseEnter: () => setIsHovered(true),
+    onMouseLeave: () => setIsHovered(false),
   };
 
   return (
@@ -14,55 +49,25 @@ function Navbar() {
       </Link>
 
       <div>
-        <Link
-          to="/"
-          style={{
-            color: isActive("/") ? "#ffffff" : undefined,
-          }}
-        >
-          Home
-        </Link>
+        {links.map((link) => (
+          <Link
+            key={link.to}
+            to={link.to}
+            style={{ color: isActive(link.to) ? "#ffffff" : undefined }}
+          >
+            {link.label}
+          </Link>
+        ))}
 
-        <Link
-          to="/cars"
-          style={{
-            color: isActive("/cars") ? "#ffffff" : undefined,
-          }}
-        >
-          Cars
-        </Link>
-
-        <Link
-          to="/bookings"
-          style={{
-            color: isActive("/bookings") ? "#ffffff" : undefined,
-          }}
-        >
-          My Bookings
-        </Link>
-
-        <Link
-          to="/login"
-          style={{
-            color: isActive("/login") ? "#ffffff" : undefined,
-          }}
-        >
-          Login
-        </Link>
-
-        <Link
-          to="/register"
-          style={{
-            padding: "9px 16px",
-            borderRadius: "8px",
-            background:
-              "linear-gradient(135deg, #f97316, #ec4899)",
-            color: "#ffffff",
-            fontWeight: "700",
-          }}
-        >
-          Register
-        </Link>
+        {!user ? (
+          <Link to="/login" {...hoverProps} style={buttonStyle}>
+            Login
+          </Link>
+        ) : (
+          <button onClick={logout} {...hoverProps} style={buttonStyle}>
+            Logout
+          </button>
+        )}
       </div>
     </nav>
   );

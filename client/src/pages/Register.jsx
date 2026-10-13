@@ -30,15 +30,13 @@ function Register() {
       style={{
         minHeight: "650px",
         padding: "60px 20px",
-        background:
-          "linear-gradient(135deg, #eef2ff, #fdf2f8)",
+        background: "linear-gradient(135deg, #eef2ff, #fdf2f8)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
       }}
     >
       <div style={{ width: "100%", maxWidth: "450px" }}>
-
         <div
           style={{
             textAlign: "center",
@@ -63,9 +61,7 @@ function Register() {
             Create Account
           </h1>
 
-          <p style={{ color: "#64748b" }}>
-            Join Smart Car Rental today
-          </p>
+          <p style={{ color: "#64748b" }}>Join Smart Car Rental today</p>
         </div>
 
         <form
@@ -110,9 +106,7 @@ function Register() {
             />
           </div>
 
-          <button type="submit">
-            Create Account →
-          </button>
+          <button type="submit">Create Account →</button>
 
           <p
             style={{
@@ -134,7 +128,6 @@ function Register() {
             </Link>
           </p>
         </form>
-
       </div>
     </div>
   );

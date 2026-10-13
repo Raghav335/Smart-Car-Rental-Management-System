@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { getRoleFromEmail } from "../utils/roles";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -12,16 +13,16 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const role = getRoleFromEmail(email);
+
     const userData = {
       email,
       name: "Demo User",
-      role: "customer",
+      role,
     };
 
-    const demoToken = "demo-token";
-
-    login(userData, demoToken);
-    navigate("/");
+    login(userData, "demo-token");
+    navigate(role === "author" ? "/author/dashboard" : "/");
   };
 
   return (
@@ -29,15 +30,13 @@ function Login() {
       style={{
         minHeight: "650px",
         padding: "60px 20px",
-        background:
-          "linear-gradient(135deg, #eef2ff, #fdf2f8)",
+        background: "linear-gradient(135deg, #eef2ff, #fdf2f8)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
       }}
     >
       <div style={{ width: "100%", maxWidth: "450px" }}>
-
         <div
           style={{
             textAlign: "center",
@@ -62,9 +61,7 @@ function Login() {
             Welcome Back
           </h1>
 
-          <p style={{ color: "#64748b" }}>
-            Login to continue your journey
-          </p>
+          <p style={{ color: "#64748b" }}>Login to continue your journey</p>
         </div>
 
         <form
@@ -97,9 +94,7 @@ function Login() {
             />
           </div>
 
-          <button type="submit">
-            Login →
-          </button>
+          <button type="submit">Login →</button>
 
           <p
             style={{
@@ -121,7 +116,6 @@ function Login() {
             </Link>
           </p>
         </form>
-
       </div>
     </div>
   );
